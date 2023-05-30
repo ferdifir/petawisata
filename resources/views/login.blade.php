@@ -16,8 +16,8 @@
             <a href="{{ url('/') }}">
                 <img src="{{ asset('logo.png') }}" class="w-40">
             </a>
-            <div class="text-3xl font-bold mb-8 w-1/2">
-                Sistem Informasi Pemetaan Wisata dan Oleh-oleh Kab. Probolinggo
+            <div class="text-3xl font-bold mb-8 w-1/2 text-center">
+                Sistem Informasi Pemetaan Wisata dan Oleh-oleh <br>Kab. Probolinggo
             </div>
 
             @if ($errors->any())

@@ -9,6 +9,14 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@mdi/font@6.9.96/css/materialdesignicons.min.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
 </head>
 
 <body>
@@ -21,16 +29,14 @@
             </div>
             <div class="h-full mt-4">
                 <ul class="font-semibold">
-                    <a href="{{ route('ajukan.wisata') }}">
-                        <li
-                            class="{{ Route::currentRouteName() == 'ajukan.wisata' ? 'text-primary-font' : 'text-gray-500 hover:text-primary-font' }} flex items-center justify-start p-4 w-full gap-4">
+                    <a href="{{ route('ajukan.wisata') }}" onclick="removeLatLng()">
+                        <li class="{{ Route::currentRouteName() == 'ajukan.wisata' ? 'text-primary-font' : 'text-gray-500 hover:text-primary-font' }} flex items-center justify-start p-4 w-full gap-4">
                             <span class="mdi mdi-island text-3xl"></span>
                             Manajemen Wisata
                         </li>
                     </a>
-                    <a href="{{ route('ajukan.oleh-oleh') }}">
-                        <li
-                            class="{{ Route::currentRouteName() == 'ajukan.oleh-oleh' ? 'text-primary-font' : 'text-gray-500 hover:text-primary-font' }} flex items-center justify-start p-4 w-full gap-4">
+                    <a href="{{ route('ajukan.oleh-oleh') }}" onclick="removeLatLng()">
+                        <li class="{{ Route::currentRouteName() == 'ajukan.oleh-oleh' ? 'text-primary-font' : 'text-gray-500 hover:text-primary-font' }} flex items-center justify-start p-4 w-full gap-4">
                             <span class="mdi mdi-gift text-3xl"></span>
                             Manajemen Oleh-oleh
                         </li>
@@ -41,17 +47,13 @@
         <div class="flex flex-col w-full">
             <header class="h-20 bg-primary-bg flex justify-end items-center p-4">
                 <div class="flex flex-col relative">
-                    <a href="javascript:void(0)"
-                        class="py-2 px-3 font-semibold hover:bg-white text-primary-font hover:shadow-md rounded-md"
-                        id="toggle">
+                    <a href="javascript:void(0)" class="py-2 px-3 font-semibold hover:bg-white text-primary-font hover:shadow-md rounded-md" id="toggle">
                         {{ Auth::user()->name }}
                     </a>
-                    <div class="absolute top-14 right-0 bg-white rounded-md p-3 shadow-md hidden transform transition-all duration-500"
-                        id="logout">
+                    <div class="absolute top-14 right-0 bg-white rounded-md p-3 shadow-md hidden transform transition-all duration-500" id="logout">
                         <form action="{{ route('logout') }}" method="POST">
                             @csrf
-                            <button type="submit"
-                                class=" text-gray-400 hover:text-primary-font hover:bg-opacity-30">LOGOUT</button>
+                            <button type="submit" class=" text-gray-400 hover:text-primary-font hover:bg-opacity-30">LOGOUT</button>
                         </form>
                     </div>
                 </div>
@@ -61,6 +63,20 @@
             </main>
         </div>
     </div>
+
+    <script>
+        function removeLatLng() {
+            localStorage.removeItem('latitude');
+            localStorage.removeItem('longitude');
+        }
+        window.onload = function() {
+            var latitude = localStorage.getItem('latitude');
+            var longitude = localStorage.getItem('longitude');
+            console.log(latitude, longitude);
+            document.getElementById('latitudeInput').value = latitude;
+            document.getElementById('longitudeInput').value = longitude;
+        };
+    </script>
 </body>
 <script>
     $(document).ready(function() {

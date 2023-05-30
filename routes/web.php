@@ -26,7 +26,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    $wisata = DB::table('wisata')->join('categories', 'wisata.category_id', '=', 'categories.id')->where('is_recommended', '1')->select(['wisata.*', 'categories.name as category_name'])->get();
+    $oleh_oleh = OlehOleh::where('is_recommended', '1')->get();
+    return view('welcome', ['wisata' => $wisata, 'oleh_oleh' => $oleh_oleh]);
 });
 
 Route::get('/tentang', function () {
@@ -39,6 +41,27 @@ Route::get('/tentang', function () {
 Route::get('/pengajuan', function () {
     return view('pengajuan');
 });
+
+Route::get('/detail/{name}', function ($name) {
+    $wisata = DB::table('wisata')
+        ->join('categories', 'wisata.category_id', '=', 'categories.id')
+        ->where('wisata.name', $name)
+        ->select(['wisata.*', 'categories.name as category_name'])
+        ->first();
+    return view('detail', ['wisata' => $wisata]);
+});
+
+Route::get('/detailoleh/{name}', function ($name) {
+    $oleh_oleh = DB::table('pusat_oleh_oleh')
+        ->where('pusat_oleh_oleh.name', $name)
+        ->select(['pusat_oleh_oleh.*'])
+        ->first();
+    return view('detailoleh', ['oleh_oleh' => $oleh_oleh]);
+});
+
+Route::get('/map', function () {
+    return view('map');
+})->name('map');
 
 Route::get('/login', [AuthController::class, 'index'])->name('login');
 Route::get('/register', [AuthController::class, 'signup'])->name('register');
